@@ -3,7 +3,17 @@
 
 #include "gmp.h"
 
+#include "crypto.h"
 #include "elliptic.h"
+
+int generateBitcoinAddress(unsigned char *resultingAddress,
+                           unsigned char *publicKey, unsigned char versionByte);
+
+void print_hex(const unsigned char *data, size_t len) {
+  for (size_t i = 0; i < len; i++)
+    printf("%02x", data[i]);
+  printf("\n");
+}
 
 int main() {
   // secp256k1
@@ -32,17 +42,30 @@ int main() {
   curve.G.infinity = 0;
 
   // key pair
-  mpz_t k;
-  mpz_init(k);
-  mpz_set_ui(k, 7);
+  mpz_t privateKey;
+  mpz_init(privateKey);
+  mpz_set_ui(privateKey, 6);
   elliptic_curve_point_t publicKey;
   ellipticCurvePointInit(&publicKey);
 
-  ellipticCurveScalarMultiply(&publicKey, &curve, &curve.G, k);
+  ellipticCurveScalarMultiply(&publicKey, &curve, &curve.G, privateKey);
 
-  gmp_printf("Private key : %Zd\n", k);
+  gmp_printf("Private key : %Zd\n", privateKey);
   gmp_printf("Public key x : %Zd\n", publicKey.x.value);
   gmp_printf("Public key y : %Zd\n", publicKey.y.value);
+
+  // hex
+
+  unsigned char publicKeyCompressedForm[33];
+  getPublicKeyCompressedForm(&publicKeyCompressedForm, &publicKey);
+  printf("Public key (compressed, hex) : ");
+  print_hex(publicKeyCompressedForm, 33);
+
+  // btc adress
+  unsigned char resultingAddress[RIPEMD160_DIGEST_LENGTH + 5];
+  generateBitcoinAddress(resultingAddress, publicKeyCompressedForm, 0x6f);
+  printf("Address : ");
+  print_hex(resultingAddress, sizeof(resultingAddress));
 
   return 0;
 }
