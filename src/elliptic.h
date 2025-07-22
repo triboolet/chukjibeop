@@ -184,7 +184,7 @@ int ellipticCurvePointAdd(elliptic_curve_point_t *result,
 
     if (mpz_invert(denom_inv, denom, curve->p) == 0) {
       printf("Modular inverse does not exist (denominator = 0 mod p)\n");
-      mpz_clears(num, denom, denom_inv, lambda, new_x, new_x_diff, new_y);
+      mpz_clears(num, denom, denom_inv, lambda, new_x, new_x_diff, new_y, NULL);
       return 1;
     }
 
@@ -207,7 +207,7 @@ int ellipticCurvePointAdd(elliptic_curve_point_t *result,
     mpz_set(result->y.value, new_y);
     result->infinity = 0;
 
-    mpz_clears(num, denom, denom_inv, lambda, new_x, new_x_diff, new_y);
+    mpz_clears(num, denom, denom_inv, lambda, new_x, new_x_diff, new_y, NULL);
   } else {
     mpz_t num, three_x1_squared, denom, denom_inv, two_x1, lambda, new_x,
         new_x_diff, new_y;
@@ -228,7 +228,7 @@ int ellipticCurvePointAdd(elliptic_curve_point_t *result,
     if (mpz_invert(denom_inv, denom, curve->p) == 0) {
       printf("Modular inverse does not exist (denominator = 0 mod p)\n");
       mpz_clears(num, denom, denom_inv, three_x1_squared, lambda, two_x1, new_x,
-                 new_x_diff, new_y);
+                 new_x_diff, new_y, NULL);
       return 1;
     }
 
@@ -252,7 +252,7 @@ int ellipticCurvePointAdd(elliptic_curve_point_t *result,
     result->infinity = 0;
 
     mpz_clears(num, denom, denom_inv, three_x1_squared, lambda, two_x1, new_x,
-               new_x_diff, new_y);
+               new_x_diff, new_y, NULL);
   }
 
   return 0;

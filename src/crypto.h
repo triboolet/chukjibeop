@@ -23,7 +23,7 @@ void getPublicKeyCompressedForm(unsigned char *buffer,
 }
 
 void base58_encode(const unsigned char *data, size_t len,
-                   unsigned char *b58_out, size_t b58_maxlen) {
+                   unsigned char *b58_out) {
   uint8_t buf[128] = {0};
   size_t buf_len = 1;
 
@@ -77,6 +77,6 @@ int generateBitcoinAddress(unsigned char *resultingAddress,
 
   memcpy(resultingAddress + RIPEMD160_DIGEST_LENGTH + 1, checksum, 4);
 
-  base58_encode(resultingAddress, sizeof(resultingAddress), resultingAddress,
-                sizeof(resultingAddress));
+  base58_encode(resultingAddress, sizeof(resultingAddress), resultingAddress);
+  return 0;
 }

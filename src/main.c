@@ -6,9 +6,6 @@
 #include "crypto.h"
 #include "elliptic.h"
 
-int generateBitcoinAddress(unsigned char *resultingAddress,
-                           unsigned char *publicKey, unsigned char versionByte);
-
 void print_hex(const unsigned char *data, size_t len) {
   for (size_t i = 0; i < len; i++)
     printf("%02x", data[i]);
@@ -57,7 +54,7 @@ int main() {
   // hex
 
   unsigned char publicKeyCompressedForm[33];
-  getPublicKeyCompressedForm(&publicKeyCompressedForm, &publicKey);
+  getPublicKeyCompressedForm(publicKeyCompressedForm, &publicKey);
   printf("Public key (compressed, hex) : ");
   print_hex(publicKeyCompressedForm, 33);
 
